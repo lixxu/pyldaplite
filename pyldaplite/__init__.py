@@ -5,8 +5,10 @@ from __future__ import unicode_literals
 import ldap
 
 DEFAULT_SEARCH_SCOPE = ldap.SCOPE_SUBTREE
-FILTER_BY_DISPLAY = 'displayName={}'
-FILTER_BY_NAME = "sAMAccountName={}"
+COMMON_FILTERS = dict(display='displayName={}', name='sAMAccountName={}',
+                      email='mail={}', phone='telephoneNumber={}',
+                      number='employeeNumber={}', mobile='mobile={}',
+                      )
 
 
 class PyLDAPLite(object):
@@ -42,15 +44,29 @@ class PyLDAPLite(object):
             result_type, result_data = self.conn.result(self.result_id, 0)
             if (result_data == []) or (limit and len(results) >= limit):
                 break
-            elif result_type == ldap.RES_SEARCH_ENTRY:
+
+            if result_type == ldap.RES_SEARCH_ENTRY:
                 results.append(result_data)
 
         return results
 
     def search_name(self, name, limit=0):
-        filter_value = FILTER_BY_NAME.format(name)
-        return self.search_by(filter_value, limit=limit)
+        return self.search_by(COMMON_FILTERS['name'], limit=limit)
+
+    def search_email(self, email, limit=0):
+        return self.search_by(COMMON_FILTERS['email'], limit=limit)
+
+    def search_mail(self, email, limit=0):
+        return self.search_email(email, limit)
+
+    def search_phone(self, phone, limit=0):
+        return self.search_by(COMMON_FILTERS['phone'], limit=limit)
+
+    def search_mobile(self, mobile, limit=0):
+        return self.search_by(COMMON_FILTERS['mobile'], limit=limit)
+
+    def search_number(self, number, limit=0):
+        return self.search_by(COMMON_FILTERS['number'], limit=limit)
 
     def search_display(self, display_name, limit=0):
-        filter_value = FILTER_BY_DISPLAY.format(display_name)
-        return self.search_by(filter_value, limit=limit)
+        return self.search_by(COMMON_FILTERS['display'], limit=limit)

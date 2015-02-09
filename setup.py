@@ -2,13 +2,13 @@
 pyldaplite
 ----------------
 
-Use LDAP to authenticate domain user
+Simple python-ldap handy wrapper
 """
 from setuptools import setup
 
 setup(
     name='pyldaplite',
-    version='0.1.0',
+    version='0.1.1',
     url='https://github.com/lixxu/pyldaplite',
     license='BSD',
     author='Lix Xu',

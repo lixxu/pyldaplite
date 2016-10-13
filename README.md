@@ -15,6 +15,8 @@ username = 'domain\\username'
 password = 'password'
 
 l = PyLDAPLite(server=server, base_dn=base_dn)
+# or secure mode
+# l = PyLDAPLite(server='ldaps://' + server, base_dn=base_dn)
 l.connect(username, password)
 
 # NT account

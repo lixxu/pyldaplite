@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 import ldap
@@ -13,7 +13,12 @@ COMMON_FILTERS = dict(display='displayName={}', name='sAMAccountName={}',
 
 class PyLDAPLite(object):
     def __init__(self, **kwargs):
-        self.server = 'ldap://{}'.format(kwargs.get('server'))
+        server = kwargs.get('server')
+        if server.startswith(('ldap:', 'ldaps:')):
+            self.server = server
+        else:
+            self.server = 'ldap://{}'.format(server)
+
         self.base_dn = kwargs.get('base_dn')
         self.search_scope = kwargs.get('search_scope') or DEFAULT_SEARCH_SCOPE
         self.retrive_attrs = kwargs.get('retrive_attrs', None)
